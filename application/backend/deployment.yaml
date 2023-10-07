@@ -1,0 +1,102 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend-deploy
+    version: alpha
+  name: backend-deploy-alpha
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-deploy
+      version: alpha
+  template:
+    metadata:
+      labels:
+        app: backend-deploy
+        version: alpha
+    spec:
+      containers:
+      - image: nginx:1.25
+        imagePullPolicy: IfNotPresent
+        name: backend
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/
+          name: nginx-index-file
+      volumes:
+      - configMap:
+          name: index-html-configmap-alpha
+        name: nginx-index-file
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend-deploy
+    version: beta
+  name: backend-deploy-beta
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-deploy
+      version: beta
+  template:
+    metadata:
+      labels:
+        app: backend-deploy
+        version: beta
+    spec:
+      containers:
+      - image: nginx:1.23
+        imagePullPolicy: IfNotPresent
+        name: backend
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/
+          name: nginx-index-file
+      volumes:
+      - configMap:
+          name: index-html-configmap-beta
+        name: nginx-index-file
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend-deploy
+    version: ga
+  name: backend-deploy-ga
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-deploy
+      version: ga
+  template:
+    metadata:
+      labels:
+        app: backend-deploy
+        version: ga
+    spec:
+      containers:
+      - image: nginx:1.19
+        imagePullPolicy: IfNotPresent
+        name: backend
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/
+          name: nginx-index-file
+      volumes:
+      - configMap:
+          name: index-html-configmap-ga
+        name: nginx-index-file

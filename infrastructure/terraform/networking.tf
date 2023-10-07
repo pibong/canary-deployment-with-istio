@@ -36,10 +36,10 @@ module "network" {
       allow = [
         {
           protocol = "tcp"
-          port     = ["15017"]
+          ports    = ["15017"]
         }
       ]
-    }
+    },
   ]
 }
 
@@ -57,7 +57,7 @@ module "cloud_router" {
   }]
 }
 
-/*
+/* TODO
 module "dns-public-zone" {
   source  = "terraform-google-modules/cloud-dns/google"
   version = "~> 5.1"

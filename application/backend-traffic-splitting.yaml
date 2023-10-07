@@ -1,0 +1,45 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: backend-dest-rule
+  namespace: app
+spec:
+  host: backend-svc
+  subsets:
+  - name: version-ga
+    labels:
+      version: ga
+  - name: version-beta
+    labels:
+      version: beta
+  - name: version-alpha
+    labels:
+      version: alpha
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: backend-vs
+  namespace: app
+spec:
+  hosts:
+  - backend-svc
+  http:
+  - match:
+    - headers:
+        user:
+          exact: foo
+    route:
+    - destination:
+        host: backend-svc
+        subset: version-alpha
+  - route:
+    - destination:
+        host: backend-svc
+        subset: version-ga
+      weight: 80
+    - destination:
+        host: backend-svc
+        subset: version-beta
+      weight: 20

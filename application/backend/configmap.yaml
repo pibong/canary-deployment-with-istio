@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: backend-deploy
+    version: alpha
+  name: index-html-configmap-alpha
+  namespace: app
+data:
+  index.html: The version is alpha (nginx:1.25)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: backend-deploy
+    version: beta
+  name: index-html-configmap-beta
+  namespace: app
+data:
+  index.html: The version is beta (nginx:1.23)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: backend-deploy
+    version: ga
+  name: index-html-configmap-ga
+  namespace: app
+data:
+  index.html: The version is ga (nginx:1.19)

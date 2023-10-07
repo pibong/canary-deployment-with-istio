@@ -12,3 +12,8 @@ output "gke_zone" {
   description = "Cluster zone"
   value       = var.zone
 }
+
+output "project_id" {
+  description = "GCP project ID"
+  value       = var.project_id
+}

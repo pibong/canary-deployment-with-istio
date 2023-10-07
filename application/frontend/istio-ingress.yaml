@@ -1,0 +1,38 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    app: frontend-deploy
+  name: webserver
+  namespace: istio-system # must be in the same namespace of istio-ingressgateway
+spec:
+  commonName: frontend.DNS_DOMAIN
+  dnsNames:
+  - frontend.DNS_DOMAIN
+  - www.frontend.DNS_DOMAIN
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-staging-ci
+  secretName: frontend-ingress-gateway-tls
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  labels:
+    app: frontend-deploy
+  name: tls-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - frontend.DNS_DOMAIN # this is used by external-dns to extract DNS names
+    port:
+      name: https-frontend
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: frontend-ingress-gateway-tls
+      mode: SIMPLE

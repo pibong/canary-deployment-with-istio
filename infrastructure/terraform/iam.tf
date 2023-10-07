@@ -1,3 +1,4 @@
+# Create GCP SA (GSA) for cert-manager: GSA will be linked to a Kubernetes SA by using GKE Workload Identity
 module "cert_manager_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "~> 4.2"
@@ -24,6 +25,7 @@ module "cert_manager_iam_bindings" {
   }
 }
 
+# Create GCP SA (GSA) for external-dns: GSA will be linked to a Kubernetes SA by using GKE Workload Identity
 module "external_dns_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "~> 4.2"

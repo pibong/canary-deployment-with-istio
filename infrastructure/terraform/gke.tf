@@ -35,17 +35,6 @@ module "gke" {
     http_load_balancing            = true
   }
 
-  cluster_autoscaling = {
-    cpu_limits = {
-      min = 5
-      max = 12
-    }
-    mem_limits = {
-      min = 8
-      max = 48
-    }
-  }
-
   logging_config = {
     enable_system_logs    = true
     enable_workloads_logs = true

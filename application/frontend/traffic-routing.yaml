@@ -1,0 +1,30 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    app: frontend-deploy
+  name: gateway-vs
+  namespace: app
+spec:
+  gateways:
+  - istio-system/tls-gateway
+  hosts:
+  - frontend.DNS_DOMAIN # this is used by external-dns to extract DNS names
+  http:
+  - route:
+    - destination:
+        host: frontend-svc
+        port:
+          number: 8000
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: frontend-dest-rule
+  namespace: app
+spec:
+  host: frontend-svc
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
